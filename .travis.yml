@@ -11,6 +11,8 @@ install:
 addons:
   sonarcloud:
     organization: vicervin-github
+  token:
+    secure: SONAR_TOKEN
 
 script:
   - (cd djangorest; python manage.py test)
