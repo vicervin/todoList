@@ -5,7 +5,6 @@ from rest_framework.test import APIClient
 from django.urls import reverse
 
 
-
 class ModelTestCase(TestCase):
     """ This is a test suite for the todoList model """
 
@@ -22,23 +21,24 @@ class ModelTestCase(TestCase):
     def test_todolist_default_status(self):
         self.assertEqual(False, self.ToDoList.done)
 
+
 class ViewTestCase(TestCase):
     """ todoList View Test Suite """
 
     def setUp(self):
         """ Define client and test variables"""
         self.client = APIClient()
-        self.todolist_data = { 'name': "ShoppingList"}
+        self.todolist_data = {'name': "ShoppingList"}
         self.response = self.client.post(
             reverse('create'),
             self.todolist_data,
             format="json"
         )
 
-    def test_CreateTodolist_via_api(self):
+    def test_create_todolist_via_api(self):
         self.assertEqual(self.response.status_code, status.HTTP_201_CREATED)
 
-    def test_readTodolist_via_api(self):
+    def test_read_todolist_via_api(self):
         """ Checks if the API gets the todolist """
         todolist = ToDoList.objects.get()
         response = self.client.get(
@@ -49,7 +49,7 @@ class ViewTestCase(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertContains(response, todolist)
 
-    def test_updateTodolist_via_api(self):
+    def test_update_todolist_via_api(self):
         todolist = ToDoList.objects.get()
         update_todolist = {'name': 'ShoppingListHome'}
         response = self.client.put(
@@ -60,7 +60,7 @@ class ViewTestCase(TestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    def test_deleteTodolist_via_api(self):
+    def test_delete_todolist_via_api(self):
         todolist = ToDoList.objects.get()
         response = self.client.delete(
             reverse('details',
