@@ -3,14 +3,16 @@ from .models import ToDoList
 from rest_framework import status
 from rest_framework.test import APIClient
 from django.urls import reverse
-
+from django.contrib.auth.models import User
 
 class ModelTestCase(TestCase):
     """ This is a test suite for the todoList model """
 
     def setUp(self):
+        """ Define test client and test variables"""
+        user = User.objects.create(username="codine")
         self.ToDoList_name = "ShoppingList"
-        self.ToDoList = ToDoList(name=self.ToDoList_name)
+        self.ToDoList = ToDoList(name=self.ToDoList_name, owner=user)
 
     def test_model_creates_todolist(self):
         old_count = ToDoList.objects.count()
@@ -27,8 +29,12 @@ class ViewTestCase(TestCase):
 
     def setUp(self):
         """ Define client and test variables"""
+
+        user = User.objects.create(username="codine")
         self.client = APIClient()
-        self.todolist_data = {'name': "ShoppingList"}
+        self.client.force_authenticate(user=user)
+
+        self.todolist_data = {'name': "Travelling Checklist", 'owner': user.id}
         self.response = self.client.post(
             reverse('create'),
             self.todolist_data,
@@ -38,9 +44,17 @@ class ViewTestCase(TestCase):
     def test_create_todolist_via_api(self):
         self.assertEqual(self.response.status_code, status.HTTP_201_CREATED)
 
+    def test_unauthorized_read(self):
+        new_client = APIClient()
+        response = new_client.get(
+                        '/todolists/',
+                        kwargs={'pk': 3},
+                        format='json')
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
     def test_read_todolist_via_api(self):
         """ Checks if the API gets the todolist """
-        todolist = ToDoList.objects.get()
+        todolist = ToDoList.objects.get(id=1)
         response = self.client.get(
             reverse('details',
                     kwargs={'pk': todolist.id}),

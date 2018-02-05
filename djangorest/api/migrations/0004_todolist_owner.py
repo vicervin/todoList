@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='todolist',
             name='owner',
-            field=models.ForeignKey(default='noUser', on_delete=django.db.models.deletion.CASCADE, related_name='todolists', to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(default=0, on_delete=django.db.models.deletion.CASCADE, related_name='todolists', to=settings.AUTH_USER_MODEL),
             preserve_default=False,
         ),
     ]
