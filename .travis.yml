@@ -8,5 +8,9 @@ python:
 install:
   - pip install -r requirements.txt
 
+addons:
+  sonarcloud:
+    organization: vicervin-github
+
 script:
   - (cd djangorest; python manage.py test)
