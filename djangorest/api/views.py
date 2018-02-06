@@ -4,21 +4,23 @@ from .serializers import ToDoListSerializer, UserSerializer
 from django.contrib.auth.models import User
 from .models import ToDoList
 from .permissions import IsOwner
+from .decorators import Logger
 
 
 class CreateView(generics.ListCreateAPIView):
-    """ This class defines the create behaviour of the API"""
+    """ This class defines the view"""
     queryset = ToDoList.objects.all()
     serializer_class = ToDoListSerializer
     permission_classes = (permissions.IsAuthenticated, IsOwner)
 
+    @Logger
     def perform_create(self, serializer):
         """ Save the post data when creating a todolist"""
         serializer.save(owner=self.request.user)
 
 
 class DetailsView(generics.RetrieveUpdateDestroyAPIView):
-    """ This class handles reading, updating and deleting requests """
+    """ This class handles the view which reads, updates and deletes requests """
 
     queryset = ToDoList.objects.all()
     serializer_class = ToDoListSerializer
