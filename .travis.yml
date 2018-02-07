@@ -16,4 +16,5 @@ addons:
 
 script:
   - (cd djangorest; python manage.py test)
+  - (cd DSL; python dsl.py simple_math.dsl)
   - sonar-scanner
