@@ -15,13 +15,14 @@ class ToDoListSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'owner', 'date_created', 'date_altered', 'done')
         read_only_fields = ('date_created', 'date_altered')
 
+
 class UserSerializer(serializers.ModelSerializer):
     """A user serializer to aid in authentication and authorization."""
 
-    bucketlists = serializers.PrimaryKeyRelatedField(
+    todolists = serializers.PrimaryKeyRelatedField(
         many=True, queryset=ToDoList.objects.all())
 
     class Meta:
         """Map this serializer to the default django user model."""
         model = User
-        fields = ('id', 'username', 'bucketlists')
+        fields = ('id', 'username', 'todolists')

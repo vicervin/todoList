@@ -1,6 +1,6 @@
 
 
-def Logger(f, *args):
+def logger(f, *args):
     def new_f(*args):
         print("Entering", f.__name__)
         f(*args)

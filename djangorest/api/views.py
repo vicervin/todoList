@@ -4,7 +4,7 @@ from .serializers import ToDoListSerializer, UserSerializer
 from django.contrib.auth.models import User
 from .models import ToDoList
 from .permissions import IsOwner
-from .decorators import Logger
+from .decorators import logger
 
 
 class CreateView(generics.ListCreateAPIView):
@@ -13,7 +13,7 @@ class CreateView(generics.ListCreateAPIView):
     serializer_class = ToDoListSerializer
     permission_classes = (permissions.IsAuthenticated, IsOwner)
 
-    @Logger
+    @logger
     def perform_create(self, serializer):
         """ Save the post data when creating a todolist"""
         serializer.save(owner=self.request.user)
