@@ -15,7 +15,9 @@ class CreateView(generics.ListCreateAPIView):
 
     @logger
     def perform_create(self, serializer):
-        """ Save the post data when creating a todolist"""
+        """ Save the post data when creating a todolist
+            and assigns the user to the todoList
+        """
         serializer.save(owner=self.request.user)
 
 

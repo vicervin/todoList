@@ -2,3 +2,4 @@
 3 minus 5
 6 divide_by 4
 7 times 92
+3 multiply -5
